@@ -1,8 +1,10 @@
 
 
-
+body{
+    background: rgba(255, 105, 105, 0);
+}
 html{
-background: rgba(255, 0, 0, 0.623);
+background: rgba(255, 105, 105, 0.829);
 }
 h1 {
     background-color: rgb(204, 203, 238);

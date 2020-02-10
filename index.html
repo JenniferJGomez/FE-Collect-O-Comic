@@ -1,22 +1,26 @@
 <!DOCTYPE html>
-
 <html>
     <head>
         <title>Collect-O-Comic</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link href="styles.css" rel="stylesheet">
     </head>
-
      <body>
         <h1>Welcome Nerd!</h1>
- 
+        <!-- navagation buttons -->
         <button class="btn btn-primary btn-lg btn-block" id = "user-collection">Nerds Collection</button>
         <button class="btn btn-primary btn-lg btn-block" id = "all-comic">All Comics</button>
-        <input type="text" id="myInput"  placeholder="Search for names.." title="Type in a name">        
-        <input type = "submit">
-
-
+        <!-- search bar -->
+        <form id = "search-bar">
+            <input type="text" name= "userInput" id="myInput"  placeholder="Search for comics.." title="Type in a name">        
+            <input type = "submit" name = "submit">
+        </form>
+        <div id = "listed-comics">
+            <div class = "comic-card">
+                <h3>Spider-Man</h3>
+                <img class ="comic-image" src = 'https://d1466nnw0ex81e.cloudfront.net/n_iv/600/4821895.jpg'>
+            </div>
+        </div>
         <script type = "text/javascript" src="index.js"></script>
-        
      </body>
 </html>

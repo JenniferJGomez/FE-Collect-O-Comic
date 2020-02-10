@@ -4,25 +4,39 @@ document.addEventListener("DOMContentLoaded", ()=> {
     getAllComics()
     getSearchform().submit.addEventListener('click', submittingForm)
 })
+
 function getSearchform(){
     return document.querySelector('#search-bar')
 }
+
 function submittingForm(e){
     e.preventDefault()
     let parentForm = e.target.parentElement
     let userInput =  parentForm.userInput.value
     console.log('submiting')
 }
+
 function getNerdCollection(){
     let userCollectionBtn = document.querySelector('#user-collection')
-    userCollectionBtn.addEventListener('click',()=>console.log("getting user collection"))
+    userCollectionBtn.addEventListener('click', fetchUser)
 }
+
+function fetchUser(){
+    fetch("http://localhost:3000/users/1")
+    .then(response => response.json())
+    .then(user =>{
+        
+    let userComics = user.comic_books
+    displaysNerdCollection(userComics)
+    })
+    
+}
+
 function getAllComics(){
     let allComicBtn = document.querySelector('#all-comic')
     allComicBtn.addEventListener('click', () => {
-        let listed_comics = document.querySelector("#listed-comics")
-        listed_comics.style.display = "block"
-        console.log('getting all comics')
+    let listed_comics = document.querySelector("#listed-comics")
+    listed_comics.style.display = "block"
     })
 }
 
@@ -36,33 +50,28 @@ function fetchComics(){
 
 function buildComicCard(comicArray){
     comicArray.forEach(comic => {
-       let listedComic =  document.querySelector('#listed-comics')    
-
-       let comicCard = document.createElement('div')  
-       comicCard.className = 'comic-card'
-
-       comicCard.id = comic.id
-
-       let comicName = document.createElement('h3')
-       comicName.innerText = comic.name
-
-       let comicImage = document.createElement('img')
-       comicImage.src = comic.image
+        let listedComic =  document.querySelector('#listed-comics')    
+        
+        let comicCard = document.createElement('div')  
+        comicCard.className = 'comic-card'
+        
+        comicCard.id = comic.id
+        
+        let comicName = document.createElement('h3')
+        comicName.innerText = comic.name
+        
+        let comicImage = document.createElement('img')
+        comicImage.src = comic.image
         // button for specific card
-       let comicBtn = document.createElement('button')
-       comicBtn.innerText = "Comic Details"
-       comicBtn.addEventListener('click', () => fetchSpecificComic(comicCard.id))
-
-
-
-
-    //    let comicDescription = document.createElement('p')
-    //    comicDescription.innerText = comic.description
-
+        let comicBtn = document.createElement('button')
+        comicBtn.innerText = "Comic Details"
+        comicBtn.addEventListener('click', () => fetchSpecificComic(comicCard.id))
+        
         listedComic.appendChild(comicCard)
         comicCard.append(comicName, comicImage, comicBtn)
-    });
-
+    })
+    
+    
     function fetchSpecificComic(comicId){
         fetch(`http://localhost:3000/comic_books/${comicId}`)
         .then(response => response.json())
@@ -77,31 +86,70 @@ function buildComicCard(comicArray){
         let comicDiv = document.createElement('div')  
         comicDiv.className = 'comic' 
         listedComic.appendChild(comicDiv)
-
+        
         let comicName  = document.createElement('h1')
         comicName.innerText = comic.name
         
         let comicImage = document.createElement('img')
         comicImage.src = comic.image
-
+        
         let comicDescription = document.createElement('p')
         comicDescription.innerText = comic.description
-
+        
         let comicEpisodeCount = document.createElement('p')
         comicEpisodeCount.innerText = `Number of episodes: ${comic.count_of_episodes}`
-
+        
         let comicRating = document.createElement('p')
-        comicRating.innerText = `Rating: ${comic.rating}`
+        // comicRating.innerText = `Rating: ${comic.rating}`
         comicRating.className = "ratings"
-
+        
+        comicRating.innerHTML = `Current Rating: ${comic.rating}
+        <label for="rating-box">Rate this Comic:</label>
+        <select id = "rating-box">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        </select>
+        <button id = "rating-button">Submit</button>
+        `
+        
         let backBtn = document.createElement('button')
         backBtn.innerText = "Back"
         backBtn.addEventListener('click', fetchComics)
-
+        
         let addComicBtn = document.createElement('button')
         addComicBtn.innerText = "Add to Collection"
-        addComicBtn.addEventListener('click', ()=>console.log("added"))
+        addComicBtn.addEventListener('click', ()=>addToCollection(comic))
         
         comicDiv.append(comicName, comicImage, comicDescription, comicEpisodeCount, comicRating, backBtn, addComicBtn)
     }
 }
+ 
+    function displaysNerdCollection(userComics, fetchSpecificComic){
+        let listedComic =  document.querySelector('#listed-comics') 
+        listedComic.innerHTML = ""
+        listedComic.style.display = "block"
+        
+        userComics.forEach(comic =>{
+            let comicCard = document.createElement('div')
+            comicCard.className = 'comic-card'
+            let comicName = document.createElement('h3')
+            comicName.innerText = comic.name 
+            
+            let comicImage = document.createElement('img')
+            comicImage.src = comic.image
+            // button for specific card
+            comicCard.id = comic.id
+            let comicBtn = document.createElement('button')
+            comicBtn.innerText = "Comic Details"
+
+            comicBtn.addEventListener('click', ()=> fetchSpecificComic)
+            
+            listedComic.appendChild(comicCard)
+            
+            comicCard.append(comicName, comicImage, comicBtn)
+        })
+        
+    }

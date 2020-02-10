@@ -27,6 +27,8 @@ function getAllComics(){
 }
 
 function fetchComics(){
+    let listedComic =  document.querySelector('#listed-comics') 
+    listedComic.innerHTML = ""
     fetch("http://localhost:3000/comic_books")
     .then(resp => resp.json())
     .then(comicArray => buildComicCard(comicArray) )
@@ -81,18 +83,25 @@ function buildComicCard(comicArray){
         
         let comicImage = document.createElement('img')
         comicImage.src = comic.image
-        
 
         let comicDescription = document.createElement('p')
         comicDescription.innerText = comic.description
+
+        let comicEpisodeCount = document.createElement('p')
+        comicEpisodeCount.innerText = `Number of episodes: ${comic.count_of_episodes}`
+
+        let comicRating = document.createElement('p')
+        comicRating.innerText = `Rating: ${comic.rating}`
+        comicRating.className = "ratings"
+
+        let backBtn = document.createElement('button')
+        backBtn.innerText = "Back"
+        backBtn.addEventListener('click', fetchComics)
+
+        let addComicBtn = document.createElement('button')
+        addComicBtn.innerText = "Add to Collection"
+        addComicBtn.addEventListener('click', ()=>console.log("added"))
         
-        comicDiv.append(comicName, comicImage, comicDescription)
-
-
-
-
-
-
- 
+        comicDiv.append(comicName, comicImage, comicDescription, comicEpisodeCount, comicRating, backBtn, addComicBtn)
     }
 }

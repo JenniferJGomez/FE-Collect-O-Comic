@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", ()=> {
-    fetchComics()
+    // fetchComics()
     getNerdCollection()
     getAllComics()
     getSearchform().submit.addEventListener('click', submittingForm)
@@ -34,11 +34,20 @@ function fetchUser(){
 
 function getAllComics(){
     let allComicBtn = document.querySelector('#all-comic')
-    allComicBtn.addEventListener('click', () => {
-    let listed_comics = document.querySelector("#listed-comics")
-    listed_comics.style.display = "block"
+    allComicBtn.addEventListener('click', ()=> {
+    let listedComics = document.querySelector('#listed-comics')
+    // debugger
+    if (listedComics.style.display == "none"){
+        listedComics.style.display = "block"
+        fetchComics()
+    }
+    else{
+        listedComics.dataset.listToggle = ""
+        listedComics.style.display = "none"
+    }
     })
 }
+
 
 function fetchComics(){
     let listedComic =  document.querySelector('#listed-comics') 

@@ -181,9 +181,12 @@ function buildComicCard(comic){
 
     function randomizerHandler(event){
         clearDiv(getListedComics())
+
         let randBtn = document.createElement('button')
         randBtn.innerText = "Get Random Comic"
-        getListedComics().appendChild(randBtn)
+        let randomContainer = document.createElement('div')
+        randomContainer.className = "random-container"
+        getListedComics().append(randBtn, randomContainer)
 
         randBtn.addEventListener('click', ()=> 
             fetch("http://localhost:3000/comic_books")
@@ -197,6 +200,9 @@ function buildComicCard(comic){
         const length = comicArray.length
         const random_number = Math.floor((Math.random() * length-1))
         const random_item = comicArray[random_number]
+        
+        let randomContainer = document.querySelector('.random-container')
+        clearDiv(randomContainer)
     
         let randomCard = document.createElement('div')
         randomCard.className = "random-card"
@@ -207,7 +213,7 @@ function buildComicCard(comic){
         let randomImg = document.createElement('img')
         randomImg.src = random_item.image
 
-        getListedComics().appendChild(randomCard)
+        randomContainer.appendChild(randomCard)
         randomCard.append(randomName, randomImg)
     }
 

@@ -33,6 +33,7 @@ function fetchUser(){
     
 }
 
+
 function getAllComics(){
     let allComicBtn = document.querySelector('#all-comic')
     allComicBtn.addEventListener('click', ()=> {
@@ -59,9 +60,17 @@ function fetchComics(){
      allComics = comics
      renderComics() })
 }
-function renderComics(){
-    allComics.forEach(comic => buildComicCard(comic))
+function renderComics(searchedComics){
+    
+    let comics = searchedComics ? searchedComics : allComics
+//   if (searchedComics){
+//         searchedComics.forEach(comic =>buildComicCard(comic)) 
+//     }else{  
+//         allComics.forEach(comic => buildComicCard(comic))
+     comics.forEach(comic => buildComicCard(comic))
+
 }
+
 
 
 
@@ -175,8 +184,14 @@ function buildComicCard(comic){
         let parentForm = e.target.parentElement
         let searchComic =  parentForm.userInput.value.toLowerCase()
         let searchResult =allComics.filter(comic => comic.name.toLowerCase().includes(searchComic))
-        debugger
+        let listedComics = document.querySelector('#listed-comics')
+        clearDiv(listedComics)
+        renderComics(searchResult)
+        e.target.parentElement.reset()
         
-        
-        
+    }
+    function clearDiv(div){
+        while(div.firstChild){
+            div.firstChild.remove()
+        }
     }

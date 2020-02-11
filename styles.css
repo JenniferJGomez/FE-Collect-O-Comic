@@ -19,7 +19,7 @@
 
 
 #listed-comics {
-    display: none;
+    /* display: none; */
     margin: 2rem;
 }
 .comic-card {

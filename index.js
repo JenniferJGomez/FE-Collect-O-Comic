@@ -3,19 +3,15 @@ document.addEventListener("DOMContentLoaded", ()=> {
     getNerdCollection()
     getAllComics()
     getSearchform().submit.addEventListener('click', submittingForm)
-    getRatingSubmit()
+    getRandomizerBtn().addEventListener('click', randomizerHandler)
 })
+
+let allComics = []
 
 function getSearchform(){
     return document.querySelector('#search-bar')
 }
 
-function submittingForm(e){
-    e.preventDefault()
-    let parentForm = e.target.parentElement
-    let userInput =  parentForm.userInput.value
-    console.log('submiting')
-}
 
 function getNerdCollection(){
     let userCollectionBtn = document.querySelector('#user-collection')
@@ -43,6 +39,7 @@ function fetchUser(event,comic){
             
           .then((response) =>response.json())
           .then(data => {
+              
             new_array = Array.from(data)
               displaysNerdCollection(new_array)
             
@@ -53,25 +50,32 @@ function fetchUser(event,comic){
     })
     
 }
-// get all comics button
+
 function getAllComics(){
     let allComicBtn = document.querySelector('#all-comic')
-    allComicBtn.addEventListener('click', () => {
-    let listed_comics = document.querySelector("#listed-comics")
-    listed_comics.style.display = "block"
-    })
+    allComicBtn.addEventListener('click', fetchComics)
 }
-// fetches all general comics
+
+
 function fetchComics(){
     let listedComic =  document.querySelector('#listed-comics') 
     listedComic.innerHTML = ""
     fetch("http://localhost:3000/comic_books")
     .then(resp => resp.json())
-    .then(comicArray => buildComicCard(comicArray) )
+    .then(comics =>{
+     allComics = comics
+     renderComics() })
 }
-// builds out the cards for an array of comics
-function buildComicCard(comicArray){
-    comicArray.forEach(comic => {
+
+function renderComics(searchedComics){
+    
+    let comics = searchedComics ? searchedComics : allComics
+    comics.forEach(comic => buildComicCard(comic))
+
+}
+
+
+function buildComicCard(comic){
         let listedComic =  document.querySelector('#listed-comics')    
         
         let comicCard = document.createElement('div')  
@@ -91,9 +95,10 @@ function buildComicCard(comicArray){
         
         listedComic.appendChild(comicCard)
         comicCard.append(comicName, comicImage, comicBtn)
-    })
+    }
     
-    // grabs a specific comic
+    
+// grabs a specific comic
     function fetchSpecificComic(comicId){
         fetch(`http://localhost:3000/comic_books/${comicId}`)
         .then(response => response.json())
@@ -145,18 +150,11 @@ function buildComicCard(comicArray){
         let addComicBtn = document.createElement('button')
         
         addComicBtn.innerText = "Add to Collection"
-        addComicBtn.addEventListener('click', ()=>addComicToCollection(comic))
+        addComicBtn.addEventListener('click', ()=>fetchUser(null,comic))
         
         comicDiv.append(comicName, comicImage, comicDescription, comicEpisodeCount, comicRating, backBtn, addComicBtn)
     }
-}
-    function addComicToCollection(comic){
-       fetchUser(null, comic)
-
-       
-        
-    }
-    
+ 
     function displaysNerdCollection(userComics, fetchSpecificComic){
         let listedComic =  document.querySelector('#listed-comics') 
         listedComic.innerHTML = ""
@@ -180,7 +178,74 @@ function buildComicCard(comicArray){
             listedComic.appendChild(comicCard)
             
             comicCard.append(comicName, comicImage, comicBtn)
-        })
+        })  
+    }
+
+    //randomizer functions
+
+    function getRandomizerBtn(){
+        return document.getElementById('randomizer')
+    }
+
+    function getListedComics(){
+        return document.getElementById('listed-comics') 
+    }
+
+    function randomizerHandler(event){
+        clearDiv(getListedComics())
+
+        let randBtn = document.createElement('button')
+        randBtn.innerText = "Get Random Comic"
+        let randomContainer = document.createElement('div')
+        randomContainer.className = "random-container"
+        getListedComics().append(randBtn, randomContainer)
+
+        randBtn.addEventListener('click', ()=> 
+            fetch("http://localhost:3000/comic_books")
+            .then(resp => resp.json())
+            .then(comicArray => randomFunction(comicArray))
+            )
+        
+    }
+
+    function randomFunction(comicArray){
+        const length = comicArray.length
+        const random_number = Math.floor((Math.random() * length-1))
+        const random_item = comicArray[random_number]
+        
+        let randomContainer = document.querySelector('.random-container')
+        clearDiv(randomContainer)
+    
+        let randomCard = document.createElement('div')
+        randomCard.className = "random-card"
+
+        let randomName = document.createElement('h2')
+        randomName.innerText = random_item.name
+
+        let randomImg = document.createElement('img')
+        randomImg.src = random_item.image
+
+        randomContainer.appendChild(randomCard)
+        randomCard.append(randomName, randomImg)
+    }
+
+
+    function clearDiv(div){
+        while(div.firstChild){
+          div.firstChild.remove()
+        }
+      }
+    
+
+    function submittingForm(e){
+        e.preventDefault()
+        let parentForm = e.target.parentElement
+        let searchComic =  parentForm.userInput.value.toLowerCase()
+        let searchResult =allComics.filter(comic => comic.name.toLowerCase().includes(searchComic))
+        let listedComics = document.querySelector('#listed-comics')
+        clearDiv(listedComics)
+        renderComics(searchResult)
+        e.target.parentElement.reset()
         
     }
 
@@ -198,5 +263,5 @@ function buildComicCard(comicArray){
    function submitingRating(){
     let ratingValue = submitBtn.parentElement.children[1].value
     parseInt(ratingValue)
-    debugger
+    
    }

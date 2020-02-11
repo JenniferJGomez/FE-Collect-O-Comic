@@ -1,9 +1,12 @@
 document.addEventListener("DOMContentLoaded", ()=> {
-    // fetchComics()
+    fetchComics()
     getNerdCollection()
     getAllComics()
     getSearchform().submit.addEventListener('click', submittingForm)
+    getRandomizerBtn().addEventListener('click', randomizerHandler)
 })
+
+let allComics = []
 
 function getSearchform(){
     return document.querySelector('#search-bar')
@@ -34,18 +37,17 @@ function fetchUser(){
 
 function getAllComics(){
     let allComicBtn = document.querySelector('#all-comic')
-    allComicBtn.addEventListener('click', ()=> {
-    let listedComics = document.querySelector('#listed-comics')
-    // debugger
-    if (listedComics.style.display == "none"){
-        listedComics.style.display = "block"
-        fetchComics()
-    }
-    else{
-        listedComics.dataset.listToggle = ""
-        listedComics.style.display = "none"
-    }
-    })
+    allComicBtn.addEventListener('click', fetchComics)
+    // let listedComics = document.querySelector('#listed-comics')
+    // // debugger
+    // if (listedComics.style.display == "none"){
+    //     listedComics.style.display = "block"
+    // }
+    // else{
+    //     listedComics.dataset.listToggle = ""
+    //     listedComics.style.display = "none"
+    // }
+    // })
 }
 
 
@@ -54,11 +56,17 @@ function fetchComics(){
     listedComic.innerHTML = ""
     fetch("http://localhost:3000/comic_books")
     .then(resp => resp.json())
-    .then(comicArray => buildComicCard(comicArray) )
+    .then(comics => {
+        allComics = comics
+        renderComics()
+    })
 }
 
-function buildComicCard(comicArray){
-    comicArray.forEach(comic => {
+function renderComics(){
+    allComics.forEach(comic => buildComicCard(comic))
+}
+
+function buildComicCard(comic){
         let listedComic =  document.querySelector('#listed-comics')    
         
         let comicCard = document.createElement('div')  
@@ -78,7 +86,7 @@ function buildComicCard(comicArray){
         
         listedComic.appendChild(comicCard)
         comicCard.append(comicName, comicImage, comicBtn)
-    })
+    }
     
     
     function fetchSpecificComic(comicId){
@@ -134,7 +142,6 @@ function buildComicCard(comicArray){
         
         comicDiv.append(comicName, comicImage, comicDescription, comicEpisodeCount, comicRating, backBtn, addComicBtn)
     }
-}
  
     function displaysNerdCollection(userComics, fetchSpecificComic){
         let listedComic =  document.querySelector('#listed-comics') 
@@ -159,6 +166,55 @@ function buildComicCard(comicArray){
             listedComic.appendChild(comicCard)
             
             comicCard.append(comicName, comicImage, comicBtn)
-        })
+        })  
+    }
+
+    //randomizer functions
+
+    function getRandomizerBtn(){
+        return document.getElementById('randomizer')
+    }
+
+    function getListedComics(){
+        return document.getElementById('listed-comics') 
+    }
+
+    function randomizerHandler(event){
+        clearDiv(getListedComics())
+        let randBtn = document.createElement('button')
+        randBtn.innerText = "Get Random Comic"
+        getListedComics().appendChild(randBtn)
+
+        randBtn.addEventListener('click', ()=> 
+            fetch("http://localhost:3000/comic_books")
+            .then(resp => resp.json())
+            .then(comicArray => randomFunction(comicArray))
+            )
         
     }
+
+    function randomFunction(comicArray){
+        const length = comicArray.length
+        const random_number = Math.floor((Math.random() * length-1))
+        const random_item = comicArray[random_number]
+    
+        let randomCard = document.createElement('div')
+        randomCard.className = "random-card"
+
+        let randomName = document.createElement('h2')
+        randomName.innerText = random_item.name
+
+        let randomImg = document.createElement('img')
+        randomImg.src = random_item.image
+
+        getListedComics().appendChild(randomCard)
+        randomCard.append(randomName, randomImg)
+    }
+
+
+    function clearDiv(div){
+        while(div.firstChild){
+          div.firstChild.remove()
+        }
+      }
+    

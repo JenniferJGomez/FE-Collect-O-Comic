@@ -21,14 +21,35 @@ function getNerdCollection(){
     let userCollectionBtn = document.querySelector('#user-collection')
     userCollectionBtn.addEventListener('click', fetchUser)
 }
-
-function fetchUser(){
+// fetches the user comics
+function fetchUser(event,comic){
     fetch("http://localhost:3000/users/1")
     .then(response => response.json())
     .then(user =>{
         
     let userComics = user.comic_books
-    displaysNerdCollection(userComics)
+  
+    if(!comic){
+        displaysNerdCollection(userComics)
+    }else{
+        fetch('http://localhost:3000/collections', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json"
+            },
+            body: JSON.stringify({user_id: user.id, comic_book_id: comic.id}),
+          })
+            
+          .then((response) =>response.json())
+          .then(data => {
+            new_array = Array.from(data)
+              displaysNerdCollection(new_array)
+            
+            })
+       
+
+    }
     })
     
 }
@@ -96,13 +117,13 @@ function buildComicCard(comic){
         comicCard.append(comicName, comicImage, comicBtn)
     }
     
-    
+    // grabs a specific comic
     function fetchSpecificComic(comicId){
         fetch(`http://localhost:3000/comic_books/${comicId}`)
         .then(response => response.json())
         .then(comic => displayComicDetailPage(comic))
     }
-
+// displays comic show page
     function displayComicDetailPage(comic){
         let list = document.querySelector("#listed-comics")
         list.innerHTML = ""
@@ -144,9 +165,11 @@ function buildComicCard(comic){
         backBtn.innerText = "Back"
         backBtn.addEventListener('click', fetchComics)
         
+        // add to collection button
         let addComicBtn = document.createElement('button')
+        
         addComicBtn.innerText = "Add to Collection"
-        addComicBtn.addEventListener('click', ()=>addToCollection(comic))
+        addComicBtn.addEventListener('click', ()=>addComicToCollection(comic))
         
         comicDiv.append(comicName, comicImage, comicDescription, comicEpisodeCount, comicRating, backBtn, addComicBtn)
     }

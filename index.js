@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", ()=> {
     getNerdCollection()
     getAllComics()
     getSearchform().submit.addEventListener('click', submittingForm)
+    getRatingSubmit()
 })
 
 function getSearchform(){
@@ -135,7 +136,7 @@ function buildComicCard(comicArray){
         </select>
         <button id = "rating-button">Submit</button>
         `
-        
+       
         let backBtn = document.createElement('button')
         backBtn.innerText = "Back"
         backBtn.addEventListener('click', fetchComics)
@@ -182,3 +183,20 @@ function buildComicCard(comicArray){
         })
         
     }
+
+
+
+
+
+    // function for grabbing submit button
+
+    function getRatingSubmit(){
+        let ratingSubmit = document.querySelector('#rating-button')
+        ratingSubmit.addEventListener('submit', submitingRating)
+    }
+   
+   function submitingRating(){
+    let ratingValue = submitBtn.parentElement.children[1].value
+    parseInt(ratingValue)
+    debugger
+   }

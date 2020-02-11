@@ -1,20 +1,21 @@
 document.addEventListener("DOMContentLoaded", ()=> {
-    // fetchComics()
+    fetchComics()
     getNerdCollection()
     getAllComics()
     getSearchform().submit.addEventListener('click', submittingForm)
 })
 
+let allComics =[]
+
 function getSearchform(){
     return document.querySelector('#search-bar')
 }
+// function renderComics(searchedComics){
+//     let comics = searchedComics ? searchedComics : allComics
+//     comics.forEach(comic => buildComicCard(comic))
+// }
 
-function submittingForm(e){
-    e.preventDefault()
-    let parentForm = e.target.parentElement
-    let userInput =  parentForm.userInput.value
-    console.log('submiting')
-}
+
 
 function getNerdCollection(){
     let userCollectionBtn = document.querySelector('#user-collection')
@@ -39,7 +40,7 @@ function getAllComics(){
     // debugger
     if (listedComics.style.display == "none"){
         listedComics.style.display = "block"
-        fetchComics()
+        
     }
     else{
         listedComics.dataset.listToggle = ""
@@ -54,11 +55,17 @@ function fetchComics(){
     listedComic.innerHTML = ""
     fetch("http://localhost:3000/comic_books")
     .then(resp => resp.json())
-    .then(comicArray => buildComicCard(comicArray) )
+    .then(comics =>{
+     allComics = comics
+     renderComics() })
+}
+function renderComics(){
+    allComics.forEach(comic => buildComicCard(comic))
 }
 
-function buildComicCard(comicArray){
-    comicArray.forEach(comic => {
+
+
+function buildComicCard(comic){
         let listedComic =  document.querySelector('#listed-comics')    
         
         let comicCard = document.createElement('div')  
@@ -78,7 +85,7 @@ function buildComicCard(comicArray){
         
         listedComic.appendChild(comicCard)
         comicCard.append(comicName, comicImage, comicBtn)
-    })
+    }
     
     
     function fetchSpecificComic(comicId){
@@ -134,7 +141,7 @@ function buildComicCard(comicArray){
         
         comicDiv.append(comicName, comicImage, comicDescription, comicEpisodeCount, comicRating, backBtn, addComicBtn)
     }
-}
+
  
     function displaysNerdCollection(userComics, fetchSpecificComic){
         let listedComic =  document.querySelector('#listed-comics') 
@@ -160,5 +167,16 @@ function buildComicCard(comicArray){
             
             comicCard.append(comicName, comicImage, comicBtn)
         })
+        
+    }
+
+    function submittingForm(e){
+        e.preventDefault()
+        let parentForm = e.target.parentElement
+        let searchComic =  parentForm.userInput.value.toLowerCase()
+        let searchResult =allComics.filter(comic => comic.name.toLowerCase().includes(searchComic))
+        debugger
+        
+        
         
     }

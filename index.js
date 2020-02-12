@@ -131,7 +131,10 @@ function buildComicCard(comic){
         // comicRating.innerText = `Rating: ${comic.rating}`
         comicRating.className = "ratings"
         
-        comicRating.innerHTML = `Current Rating: ${comic.rating}
+        comicRating.innerText = comic.rating
+
+        let ratingDropDwn = document.createElement('div')
+        ratingDropDwn.innerHTML = `
         <label for="rating-box">Rate this Comic:</label>
         <select id = "rating-box">
         <option value="1">1</option>
@@ -141,15 +144,12 @@ function buildComicCard(comic){
         <option value="5">5</option>
         </select>
         `
-        // <button id = "rating-button">Submit</button>
-
-        // debugger
         let ratingBtn = document.createElement('button')
         ratingBtn.id = 'rating-button'
         ratingBtn.innerText = "Submit Rating"
-        comicRating.appendChild(ratingBtn)
+        comicRating.append(ratingBtn)
         ratingBtn.addEventListener('click', (event)=>submitRating(event, comic))
-       
+        ratingDropDwn.appendChild(ratingBtn)
         let backBtn = document.createElement('button')
         backBtn.innerText = "Back"
         backBtn.addEventListener('click', fetchComics)
@@ -160,7 +160,7 @@ function buildComicCard(comic){
         addComicBtn.innerText = "Add to Collection"
         addComicBtn.addEventListener('click', ()=>fetchUser(null,comic))
         
-        comicDiv.append(comicName, comicImage, comicDescription, comicEpisodeCount, comicRating, backBtn, addComicBtn)
+        comicDiv.append(comicName, comicImage, comicDescription, comicEpisodeCount, comicRating, ratingDropDwn, backBtn, addComicBtn)
     }
  
     function displaysNerdCollection(userComics, fetchSpecificComic){
@@ -259,9 +259,13 @@ function buildComicCard(comic){
 
    
    function submitRating(event, comic){
+    
         let ratingValue = event.target.parentElement.children[1].value
         let ratingInt =  parseInt(ratingValue)
+        let updatedRating = event.target.parentElement.parentElement.children[4]
+
         let comicId = comic.id
+
         let ratingObj = {rating: ratingInt}
         fetch(`http://localhost:3000/comic_books/${comicId}`,{
             method: "PATCH",
@@ -273,6 +277,6 @@ function buildComicCard(comic){
           
         }).then(res =>res.json())
         .then(json =>{
-            console.log(json)
+        updatedRating.innerText = json.rating.toString()
         })
    }

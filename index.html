@@ -1,21 +1,28 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Collect-O-Comic</title>
+        <title>IMTV</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css?family=Bangers&display=swap" rel="stylesheet">
         <link href="styles.css" rel="stylesheet">
     </head>
      <body>
         <h1>Welcome Nerd!</h1>
         <!-- navagation buttons -->
-        <button class="btn btn-primary btn-lg btn-block" id = "user-collection">Nerds Collection</button>
-        <button class="btn btn-primary btn-lg btn-block" id = "all-comic">All Comics</button>
-        <button class="btn btn-primary btn-lg btn-block" id = "randomizer">Comic Randomizer</button>
-        <!-- search bar -->
-        <form id = "search-bar">
-            <input type="text" name= "userInput" id="myInput"  placeholder="Search for comics.." title="Type in a name">        
-            <input type = "submit" name = "submit">
-        </form>
+        <div class="btn-group" role="group" aria-label="Basic example">
+            <button class="btn btn-lg btn-outline-dark btn-primary" id = "user-collection">Nerds Collection</button>
+            <button class="btn btn-lg btn-outline-dark btn-primary" id = "all-comic">All TV Shows</button>
+            <button class="btn btn-lg btn-outline-dark btn-primary" id = "randomizer">Randomizer: Find a new show!</button>
+            <!-- search bar -->
+        </div>
+        
+        <div id = "search-form-div">
+                <form id = "search-bar">
+                    <input class="form-control" type="text" name= "userInput" id="myInput"  placeholder="Search for show.." title="Type in a name">        
+                    <input class = "btn btn-primary btn-md" type = "submit" name = "submit">
+                </form>
+        </div>
+       
         <div id = "listed-comics"> 
             <!-- style = "display: none;" -->
             <div class = "comic-card">

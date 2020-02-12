@@ -91,7 +91,8 @@ function buildComicCard(comic){
         comicImage.src = comic.image
         // button for specific card
         let comicBtn = document.createElement('button')
-        comicBtn.innerText = "Comic Details"
+        comicBtn.innerText = "Show Details"
+        comicBtn.className = "comic-card-btn-all-comics"
         comicBtn.addEventListener('click', () => fetchSpecificComic(comicCard.id))
         
         listedComic.appendChild(comicCard)
@@ -135,7 +136,7 @@ function buildComicCard(comic){
 
         let ratingDropDwn = document.createElement('div')
         ratingDropDwn.innerHTML = `
-        <label for="rating-box">Rate this Comic:</label>
+        <label for="rating-box">Rate this Show:</label>
         <select id = "rating-box">
         <option value="1">1</option>
         <option value="2">2</option>
@@ -179,7 +180,7 @@ function buildComicCard(comic){
             // button for specific card
             comicCard.id = comic.id
             let comicBtn = document.createElement('button')
-            comicBtn.innerText = "Comic Details"
+            comicBtn.innerText = "Show Details"
 
             comicBtn.addEventListener('click', ()=> fetchSpecificComic)
             
@@ -203,7 +204,10 @@ function buildComicCard(comic){
         clearDiv(getListedComics())
 
         let randBtn = document.createElement('button')
-        randBtn.innerText = "Get Random Comic"
+        randBtn.innerText = "Get Random Show"
+        randBtn.type = "button"
+        randBtn.className = "btn btn-primary btn-lg"
+        randBtn.id = "randomizer-button"
         let randomContainer = document.createElement('div')
         randomContainer.className = "random-container"
         getListedComics().append(randBtn, randomContainer)

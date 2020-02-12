@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", ()=> {
     getAllComics()
     getSearchform().submit.addEventListener('click', submittingForm)
     getRandomizerBtn().addEventListener('click', randomizerHandler)
+
 })
 
 let allComics = []
@@ -139,8 +140,15 @@ function buildComicCard(comic){
         <option value="4">4</option>
         <option value="5">5</option>
         </select>
-        <button id = "rating-button">Submit</button>
         `
+        // <button id = "rating-button">Submit</button>
+
+        // debugger
+        let ratingBtn = document.createElement('button')
+        ratingBtn.id = 'rating-button'
+        ratingBtn.innerText = "Submit Rating"
+        comicRating.appendChild(ratingBtn)
+        ratingBtn.addEventListener('click', (event)=>submitRating(event, comic))
        
         let backBtn = document.createElement('button')
         backBtn.innerText = "Back"
@@ -249,19 +257,10 @@ function buildComicCard(comic){
         
     }
 
-
-
-
-
-    // function for grabbing submit button
-
-    function getRatingSubmit(){
-        let ratingSubmit = document.querySelector('#rating-button')
-        ratingSubmit.addEventListener('submit', submitingRating)
-    }
    
-   function submitingRating(){
-    let ratingValue = submitBtn.parentElement.children[1].value
-    parseInt(ratingValue)
-    
+   function submitRating(event, comic){
+        console.log(event)
+        debugger
+        // let ratingValue = ratingBtn.parentElement.children[1].value
+        // parseInt(ratingValue)
    }

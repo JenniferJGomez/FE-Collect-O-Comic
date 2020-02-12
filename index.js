@@ -117,10 +117,12 @@ function buildComicCard(comic){
         listedComic.appendChild(comicDiv)
         
         let comicName  = document.createElement('h1')
+        comicName.className = "detail-page-h1"
         comicName.innerText = comic.name
         
         let comicImage = document.createElement('img')
         comicImage.src = comic.image
+        comicImage.className = "detail-page-img"
         
         let comicDescription = document.createElement('p')
         comicDescription.innerText = comic.description
@@ -138,11 +140,11 @@ function buildComicCard(comic){
         ratingDropDwn.innerHTML = `
         <label for="rating-box">Rate this Show:</label>
         <select id = "rating-box">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
         </select>
         `
         let ratingBtn = document.createElement('button')

@@ -259,8 +259,20 @@ function buildComicCard(comic){
 
    
    function submitRating(event, comic){
-        console.log(event)
-        debugger
-        // let ratingValue = ratingBtn.parentElement.children[1].value
-        // parseInt(ratingValue)
+        let ratingValue = event.target.parentElement.children[1].value
+        let ratingInt =  parseInt(ratingValue)
+        let comicId = comic.id
+        let ratingObj = {rating: ratingInt}
+        fetch(`http://localhost:3000/comic_books/${comicId}`,{
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json"
+            },
+            body: JSON.stringify(ratingObj)
+          
+        }).then(res =>res.json())
+        .then(json =>{
+            console.log(json)
+        })
    }

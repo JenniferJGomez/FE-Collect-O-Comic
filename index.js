@@ -149,18 +149,23 @@ function buildComicCard(comic){
         `
         let ratingBtn = document.createElement('button')
         ratingBtn.id = 'rating-button'
+        ratingBtn.className = "btn btn-outline-primary"
         ratingBtn.innerText = "Submit Rating"
         comicRating.append(ratingBtn)
         ratingBtn.addEventListener('click', (event)=>submitRating(event, comic))
         ratingDropDwn.appendChild(ratingBtn)
         let backBtn = document.createElement('button')
+        backBtn.className = "btn btn-outline-primary"
         backBtn.innerText = "Back"
+        backBtn.id = "back-button"
         backBtn.addEventListener('click', fetchComics)
         
         // add to collection button
         let addComicBtn = document.createElement('button')
         
         addComicBtn.innerText = "Add to Collection"
+        addComicBtn.className ="btn btn-outline-primary"
+        addComicBtn.id = "add-btn"
         addComicBtn.addEventListener('click', ()=>fetchUser(null,comic))
         
         comicDiv.append(comicName, comicImage, comicDescription, comicEpisodeCount, comicRating, ratingDropDwn, backBtn, addComicBtn)

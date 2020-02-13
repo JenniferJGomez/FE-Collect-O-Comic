@@ -118,6 +118,14 @@ form{
     margin: auto;
 }
 
+#back-button{
+    margin-top: 5px;
+}
+
+#add-btn{
+    margin-top: 5px;
+}
+
 /* .comic{
     background-image: url("https://www.kindpng.com/picc/m/3-32201_transparent-retro-radio-clipart-transparent-background-tv-png.png");
     background-repeat: no-repeat;

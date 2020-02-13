@@ -111,6 +111,9 @@ function buildComicCard(comic){
         let list = document.querySelector("#listed-comics")
         list.innerHTML = ""
         let listedComic =  document.querySelector('#listed-comics') 
+
+        let infoDiv = document.createElement('div')
+        infoDiv.id = "info-div"
         // card
         let comicDiv = document.createElement('div')  
         comicDiv.className = 'comic' 
@@ -125,6 +128,7 @@ function buildComicCard(comic){
         comicImage.className = "detail-page-img"
         
         let comicDescription = document.createElement('p')
+        comicDescription.id = "comic-desc"
         comicDescription.innerText = comic.description
         
         let comicEpisodeCount = document.createElement('p')
@@ -134,7 +138,7 @@ function buildComicCard(comic){
         // comicRating.innerText = `Rating: ${comic.rating}`
         comicRating.className = "ratings"
         
-        comicRating.innerText = comic.rating
+        comicRating.innerText = `Current Rating: ${comic.rating}`
 
         let ratingDropDwn = document.createElement('div')
         ratingDropDwn.innerHTML = `
@@ -168,7 +172,8 @@ function buildComicCard(comic){
         addComicBtn.id = "add-btn"
         addComicBtn.addEventListener('click', ()=>fetchUser(null,comic))
         
-        comicDiv.append(comicName, comicImage, comicDescription, comicEpisodeCount, comicRating, ratingDropDwn, backBtn, addComicBtn)
+        infoDiv.append(comicName, comicImage, comicDescription, comicEpisodeCount, comicRating, ratingDropDwn)
+        comicDiv.append(infoDiv, backBtn, addComicBtn)
     }
  
     function displaysNerdCollection(userComics, fetchSpecificComic){
@@ -189,7 +194,7 @@ function buildComicCard(comic){
             let comicBtn = document.createElement('button')
             comicBtn.innerText = "Show Details"
 
-            comicBtn.addEventListener('click', ()=> fetchSpecificComic)
+            comicBtn.addEventListener('click', ()=> displayComicDetailPage(comic))
             
             listedComic.appendChild(comicCard)
             

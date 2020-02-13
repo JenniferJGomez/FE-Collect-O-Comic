@@ -204,7 +204,8 @@ function buildComicCard(comic){
 
     function randomizerHandler(event){
         clearDiv(getListedComics())
-
+        let randomText = document.createElement('h4')
+        randomText.innerText = "Looking for something new to watch? Click button below!"
         let randBtn = document.createElement('button')
         randBtn.innerText = "Get Random Show"
         randBtn.type = "button"
@@ -212,7 +213,7 @@ function buildComicCard(comic){
         randBtn.id = "randomizer-button"
         let randomContainer = document.createElement('div')
         randomContainer.className = "random-container"
-        getListedComics().append(randBtn, randomContainer)
+        getListedComics().append(randomText,randBtn, randomContainer)
 
         randBtn.addEventListener('click', ()=> 
             fetch("http://localhost:3000/comic_books")
